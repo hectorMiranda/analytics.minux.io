@@ -1,0 +1,21 @@
+html,
+body {
+  background: #efefef;
+  padding: 0px;
+  padding-top: 40px;
+}
+
+a {
+  transition: all ease-in-out 200ms;
+}
+a:hover {
+  color: #333333;
+  text-decoration: none;
+}
+
+img {
+    // -webkit-filter: grayscale(90%);
+    // filter: grayscale(90%); /* make all photos black and white */
+    width: 100%; /* Set width to 100% */
+    margin: auto;
+}

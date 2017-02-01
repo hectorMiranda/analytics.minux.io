@@ -28,5 +28,7 @@ rails db:create
 ##Application Design
 
 ##Using the app
+###Creating your first user
 
+Go to: http://localhost:3000/users/sign_up
 ##Testing
