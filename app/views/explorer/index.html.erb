@@ -1,3 +1,5 @@
-<div class="container">
-  <h1>Twitter Explorer</h1>
-</div>
+
+<%= form_tag(search_explorer_path, :method => "get", id: "search-form") do %>
+    <%= text_field_tag :search, params[:search], placeholder: "Enter handle" %>
+    <%= submit_tag "Get Twits!", :name => nil %>
+<% end %>
