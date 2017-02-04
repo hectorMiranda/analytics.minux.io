@@ -1,5 +1,12 @@
 class ExplorerController < ApplicationController
-    def index
-        @results = Explorer.search(params[:search]) if params[:search]
+    before_filter :load_tweets
+    def load_tweets
+        @tweets = if params[:search]
+                      Explorer.get_tweets(params[:search])
+                  else
+                      []
+                  end
     end
+
+    def index; end
 end

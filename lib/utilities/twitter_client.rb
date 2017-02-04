@@ -1,25 +1,37 @@
 require 'twitter'
 
 class TwitterClient
-    def get_tweets(handle, count)
-        handle_errors do
-            handle_caching(handle) do
-                @client = Twitter::REST::Client.new do |config|
-                    config.consumer_key = ENV['TWITTER_CONSUMER_KEY_API']
-                    config.consumer_secret = ENV['TWITTER_API_SECRET']
-                    config.access_token = ENV['TWITTER_OAUTH_ACCESS_TOKEN']
-                    config.access_token_secret = ENV['TWITTER_OAUTH_ACCESS_TOKEN_SECRET']
-                end
+    attr_accessor :handle, :count
 
-                @client.user_timeline(handle.to_s, count: count)
+    def initialize(handle, count)
+        @handle = handle
+        @count = count
+    end
+
+    def get_tweets
+        unless @handle.nil?
+            handle_errors do
+                handle_caching(handle) do
+                    @client = Twitter::REST::Client.new do |config|
+                        config.consumer_key = ENV['TWITTER_CONSUMER_KEY_API']
+                        config.consumer_secret = ENV['TWITTER_API_SECRET']
+                        config.access_token = ENV['TWITTER_OAUTH_ACCESS_TOKEN']
+                        config.access_token_secret = ENV['TWITTER_OAUTH_ACCESS_TOKEN_SECRET']
+                    end
+
+                    @client.user_timeline(handle.to_s, count: count)
+                end
             end
-        end
+      end
     end
 
     def handle_errors
         yield
     rescue Twitter::Error::Forbidden => error
         Rails.logger.error "Invalid credentials: #{error}"
+        {}
+    rescue Twitter::Error::Unauthorized => error
+        Rails.logger.error "Unauthorized: #{error}"
         {}
     rescue Net::OpenTimeout, Net::ReadTimeout
         Rails.logger.error 'Network error'
@@ -33,11 +45,16 @@ class TwitterClient
     def handle_caching(handle)
         if cached = $redis.get(cache_key(handle))
             Rails.logger.info("Returning cached tweets for #{cache_key(handle)}")
-            cached
+            Rails.logger.info JSON.parse(cached)
+            JSON.parse(cached)
+
         else
             yield.tap do |results|
                 Rails.logger.info("Caching tweets for #{cache_key(handle)}")
-                $redis.set(cache_key(handle), results)
+                Rails.logger.info results.to_json
+                $redis.set(cache_key(handle), results.to_json)
+                $redis.expire(cache_key(handle), 5.minute.to_i)
+                results.to_json
             end
         end
      end
