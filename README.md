@@ -88,3 +88,22 @@ handle_caching(options) checks for the existence of a key and returns the payloa
 
 
 ##Testing
+
+To run the test
+
+```
+rails spec
+```
+
+The following gems are being used for testing support:
+
+* rpsec: is the testing framework that I use for testing
+* factory_girl: allow us to code smart database fixtures in ruby, in things called factories
+* capybara: lets helps you test web applications by simulating how a real user would interact with your app.
+* guard: makes rerunning tests a snap, by watching the filesystem for when you save files and triggering events automatically
+* webmock: locks down the test environment from talking to the internet
+* vcr: record the test suite's HTTP interactions and replay them during future test runs for fast, deterministic, accurate tests
+* rspec-rails: is the rails integration with rspec, which depends upon rspec itself.
+factory_girl_rails: is the rails integration with factory_girl.
+* guard-rspec: is rspec integration with guard
+* spring-commands-rspec: lets you integrate rspec with spring, which means that your tests will run much faster.
