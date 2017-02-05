@@ -27,8 +27,8 @@ class TwitterClient
 
     def handle_errors
         yield
-    rescue Twitter::Error::Forbidden => error
-        Rails.logger.error "Invalid credentials: #{error}"
+    rescue Twitter::Error => error
+        Rails.logger.error "Error: #{error}"
         {}
     rescue Twitter::Error::Unauthorized => error
         Rails.logger.error "Unauthorized: #{error}"

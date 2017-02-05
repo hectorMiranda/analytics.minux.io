@@ -2,7 +2,14 @@
 
 TwitterExplorer allows you to display the last 25 tweets for any given Twitter handle.
 
-I live version for this app can be found [here](https://marcetuxexplorer.herokuapp.com/)
+A live version for this app can be found [here](https://marcetuxexplorer.herokuapp.com/)
+
+You can use the following credentials to try the app or create a new account if you prefer.
+
+```
+login: fakeuser@gmail.com
+password: Password1!
+```
 
 ## Getting started
 
@@ -50,8 +57,28 @@ export TWITTER_OAUTH_ACCESS_TOKEN_SECRET="AEIPtSI8zi...."
 
 ##Application Design
 
+To the protect the application from the general public I have used the devise gem, which is a flexible authentication solution based on Warden. The application only uses an User to support the devise functionality, below is the model definition:
 
-The TwitterClient class implements the caching logic and the handle of the REST requests. I choose the Twitter gem as it provides the boilerplate around interacting with the Twitter API.
+```
+create_table "users", force: :cascade do |t|
+  t.string   "email",                  default: "", null: false
+  t.string   "encrypted_password",     default: "", null: false
+  t.string   "reset_password_token"
+  t.datetime "reset_password_sent_at"
+  t.datetime "remember_created_at"
+  t.integer  "sign_in_count",          default: 0,  null: false
+  t.datetime "current_sign_in_at"
+  t.datetime "last_sign_in_at"
+  t.inet     "current_sign_in_ip"
+  t.inet     "last_sign_in_ip"
+  t.datetime "created_at",                          null: false
+  t.datetime "updated_at",                          null: false
+  t.index ["email"], name: "index_users_on_email", unique: true, using: :btree
+  t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
+end
+```
+
+To interact with the Twitter API I choose the Twitter gem as it provides the boilerplate around interacting with the Twitter API. The TwitterClient class implements the caching logic and the handle of the REST requests.
 
 The twitter gem raise Net::OpenTimeout if it can’t connect to the server and Net::ReadTimeout if reading the response from the server times out I simply handle both exceptions to return empty hashes, and set the timeout to 1 second. Instead of implementing this timeout-handling logic in both methods, I’m opting for a handle_timeouts function that takes a block. If the block raises an exception, handle_timeouts will catch the exception and return an empty hash.
 
@@ -61,9 +88,9 @@ handle_caching(options) checks for the existence of a key and returns the payloa
 
 
 ##Using the app
-###Creating your first user
+[Creating your first user](http://localhost:3000/users/sign_up)
 
-Go to: http://localhost:3000/users/sign_up
+[Edit your profile_image_url](http://localhost:3000/users/edit)
 
 
 ##Testing
