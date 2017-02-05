@@ -30,12 +30,6 @@ class TwitterClient
     rescue Twitter::Error => error
         Rails.logger.error "Error: #{error}"
         {}
-    rescue Twitter::Error::Unauthorized => error
-        Rails.logger.error "Unauthorized: #{error}"
-        {}
-    rescue Net::OpenTimeout, Net::ReadTimeout
-        Rails.logger.error 'Network error'
-        {}
     end
 
     def cache_key(handle)

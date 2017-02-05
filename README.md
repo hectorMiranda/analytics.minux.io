@@ -80,17 +80,11 @@ end
 
 To interact with the Twitter API I choose the Twitter gem as it provides the boilerplate around interacting with the Twitter API. The TwitterClient class implements the caching logic and the handle of the REST requests.
 
-The twitter gem raise Net::OpenTimeout if it can’t connect to the server and Net::ReadTimeout if reading the response from the server times out I simply handle both exceptions to return empty hashes, and set the timeout to 1 second. Instead of implementing this timeout-handling logic in both methods, I’m opting for a handle_timeouts function that takes a block. If the block raises an exception, handle_timeouts will catch the exception and return an empty hash.
+The twitter gem raise Twitter::Error if it can’t connect to the server, if the credentials are not working or if the handle do not exist. For all those cases I decided to return empty hashes I’m opting for a handle_errors function that takes a block. If the block raises an exception, handle_timeouts will catch the exception and return an empty hash.
 
 I'm using Redis as my cache server, all of the caching logic is in handle_caching(options) and cache_key(options), the latter of which builds a unique key to store the cached response based on a given Twitter handle.
 
 handle_caching(options) checks for the existence of a key and returns the payload if available. Otherwise, it yields to the block passed in and stores the result in Redis.
-
-
-##Using the app
-[Creating your first user](http://localhost:3000/users/sign_up)
-
-[Edit your profile_image_url](http://localhost:3000/users/edit)
 
 
 ##Testing
