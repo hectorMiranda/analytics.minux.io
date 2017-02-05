@@ -1,16 +1,50 @@
+<div class="row">
+    <div class="panel panel-default widget">
+        <div class="panel-heading">
+            <%= form_tag(search_explorer_path, :method => "get", id: "search-form", class: "form-inline pull-right") do %>
+            <%= text_field_tag :search, params[:search], placeholder: "Enter handle" %>
+            <%= submit_tag "Get Tweets!", :name => nil %>
+            <% end %>
+            <h3 class="panel-title">
+                <span class="glyphicon glyphicon-comment"></span>
+                <%=params[:search] %></h3>
+        </div>
+        <div class="panel-body">
+            <ul class="list-group">
 
-<%= form_tag(search_explorer_path, :method => "get", id: "search-form") do %>
-    <%= text_field_tag :search, params[:search], placeholder: "Enter handle" %>
-    <%= submit_tag "Get Tweets!", :name => nil %>
-<% end %>
-
-<ul>
-  <% @tweets.each do |tweet| %>
-    <li>
-      <div>
-      <p><%= tweet['created_at']%></p>
-      <%=raw auto_link(tweet['text'], :target => '_blank' ) %>
-      </div>
-    </li>
-  <% end %>
-</ul>
+                <% if @tweets.count == 0 %>
+                <li class="list-group-item">
+                    <div class="row">
+                        <div class="col-xs-12 col-md-12">
+                            <div>
+                                <div class="mic-info">
+                                    Handle was not found
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+                <%else%>
+                  <% @tweets.each do |tweet| %>
+                  <li class="list-group-item">
+                      <div class="row">
+                          <div class="col-xs-2 col-md-1">
+                              <img src="<%= tweet['user']['profile_image_url']%>" class="img-circle img-responsive" alt=""/></div>
+                          <div class="col-xs-10 col-md-11">
+                              <div>
+                                  <div class="mic-info">
+                                      <%= tweet['created_at']%>
+                                  </div>
+                              </div>
+                              <div class="comment-text">
+                                  <%=raw auto_link(tweet['text'], :target => '_blank' ) %>
+                              </div>
+                          </div>
+                      </div>
+                  </li>
+                  <% end %>
+                <%end%>
+            </ul>
+        </div>
+    </div>
+</div>
