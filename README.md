@@ -2,9 +2,6 @@
 
 A live version for this app can be found [here](https://marcetuxexplorer.herokuapp.com/)
 
-You can use the following credentials to try the app or create a new account if you prefer.
-
-
 
 ## Getting started
 
