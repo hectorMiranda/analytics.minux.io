@@ -1,15 +1,10 @@
-#Twitter Explorer
-
-TwitterExplorer allows you to display the last 25 tweets for any given Twitter handle.
+#A web based analytics tool
 
 A live version for this app can be found [here](https://marcetuxexplorer.herokuapp.com/)
 
 You can use the following credentials to try the app or create a new account if you prefer.
 
-```
-login: fakeuser@gmail.com
-password: Password1!
-```
+
 
 ## Getting started
 
@@ -17,12 +12,8 @@ To run this web application locally you will need a locally installed version of
 
 Follow these steps to run the app locally:
 
-###1. Clone this repository
-```
-git clone https://github.com/hectorMiranda/twitterexplorer.git
-```
 
-###2. Install dependencies
+###1. Install dependencies
 
 Running the command below will genera a new Gemfile.lock
 ```
@@ -33,7 +24,7 @@ Now create the database, postgresql is required.
 rails db:create
 ```
 
-###3. Install redis
+###2. Install redis
 
 ```
 wget http://download.redis.io/redis-stable.tar.gz
